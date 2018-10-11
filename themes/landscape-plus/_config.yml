@@ -1,0 +1,42 @@
+# Header
+menu:
+  Home: /
+  Archives: /archives
+rss: /atom.xml
+
+# Content
+excerpt_link: Read More
+fancybox: false
+mathjax: false
+
+# Sidebar
+sidebar: right
+widgets:
+- author
+- subscription
+- category
+- tag
+- tagcloud
+- archive
+- recent_posts
+- links
+
+# Links
+links:
+  # 阮一峰: http://www.ruanyifeng.com/home.html
+  # 廖雪峰: https://www.liaoxuefeng.com/
+  GibHub: https://github.com/hanzkering
+
+# Miscellaneous
+google_analytics:
+favicon: /images/favicon.png
+twitter:
+google_plus:
+fb_admins: 
+fb_app_id:
+
+# Baidu share
+baidushare: false
+
+# 畅言评论
+changyan: true
