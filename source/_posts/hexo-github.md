@@ -98,7 +98,7 @@ INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.
 ```
 此时，浏览器访问`http://localhost:4000`，即可看到你的博客。效果如下：
 
-![hexo默认博客首页](/images/posts/hexo-init.png ''hexo默认博客首页'')
+![hexo默认博客首页](http://www.hellokang.net/images/posts/hexo-init.png ''hexo默认博客首页'')
 
 至此，hexo搭建的博客已经完成。该博客使用方法，如何发文章，分类，标签等操作请参考[Hexo文档](https://hexo.io/zh-cn/docs/)，本文不再赘述。
 
@@ -113,12 +113,58 @@ GitHub上允许我们搭建自己的静态站点，在不购买自己的服务�
 
 ### 3.2 创建版本库
 登录后，[创建新版本库https://github.com/new](https://github.com/new)
-![新建版本库](/images/posts/github-new-repository.png)
+![新建版本库](http://www.hellokang.net/images/posts/github-new-repository.png)
 
 *注意：版本库名字强烈建议是 `<你的用户>.github.io` 这种格式*
 创建完毕后，就可以使用 `<你的用户>.github.io` 这种方式访问你的github博客地址，但现在访问应该不会成功，因为是一个新创建的版本库，是空的，一无所有....。接下来就把我们本地的博客内容部署到这个github版本库上。
 
-### 3.3 部署到GitHub
+### 3.3 GitHub的SSH keys设置
+在部署之前，需要保证GitHub可以验证我们的机器，需要将本地的RAS-publicKey告知给GitHub，步骤如下：
+
+#### 3.3.1 本地RAS密钥对生成
+进入到 用户目录/.ssh目录下，查看是否已经存在了， 私钥`id_rsa` 公钥`id_rsa.pub`
+```
+C:\Users\Kang> cd .ssh
+C:\Users\Kang\.ssh> dir
+-a----       2018/10/10     19:46           1679 id_rsa
+-a----       2018/10/10     19:46            403 id_rsa.pub
+```
+上面的输出表示已经存在。若不存在，执行 `ssh-keygen` 生成即可（持续回车即可）：
+```
+C:\Users\Kang\.ssh> ssh-keygen.exe -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (C:\Users\Kang/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in C:\Users\Kang/.ssh/id_rsa.
+Your public key has been saved in C:\Users\Kang/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:ymf2laAmgHVsGakavggdXrzORtVRNxkuKYq444C5Irs kang@V1N3RYQG70NI7YD
+The key's randomart image is:
++---[RSA 2048]----+
+|      .. .. +o   |
+|     ..o.  +..   |
+|   ...=...o .    |
+|  o+++.... .     |
+| +o=oo. S .      |
+|o.=.oo . . . .   |
+|=.o=  + *   o    |
+|++..+  * . .     |
+|Eo..      .      |
++----[SHA256]-----+
+```
+> -t rsa 表示使用的加密类型。生成过程可以输入一些信息，简单起见，全部回车即可。
+
+生成完毕后，目录中应该存在相应文件了。
+#### 3.3.2 告知GitHub公钥
+在GitHub的用户设置中，找到ssh key的设置：[SSH Keys](https://github.com/settings/keys)
+点击 New SSH Key 新建
+![](http://www.hellokang.net/images/posts/github-sshkey-new.png)
+将生成的公钥id_rsa.pub内容拷贝到输入框中，起名标志即可。
+![](http://www.hellokang.net/images/posts/github-sshkey-set.png)
+保存即可。此时GitHub已经和我们本地电脑建立的信任关系。我们就可以将内容发布到GitHub上了。
+
+### 3.4 部署到GitHub
 回到我们本地的博客项目中，hexo对于基于git的部署提供了一个工具[hexo-deployer-git](https://github.com/hexojs/hexo-deployer-git)，我们直接安装使即可。
 
 安装 hexo-deployer-git
@@ -126,7 +172,7 @@ GitHub上允许我们搭建自己的静态站点，在不购买自己的服务�
 $ npm install hexo-deployer-git --save
 ```
 
-### 3.4 修改博客的部署配置
+### 3.5 修改博客的部署配置
 需要指定部署类型，版本库地址，分支，消息等信息
 ```
 /_config.yml
@@ -136,7 +182,7 @@ deploy:
   branch: master
 ```
 
-### 3.5 执行部署
+### 3.6 执行部署
 部署的过程，是将本地博客先生成静态文件，然后将静态文件发布到指定的版本库中。
 因此总的过程应该是，清理之前的静态文件，生成新静态文件，发布到版本库 这个步骤，执行下面的代码即可：
 ```
@@ -146,18 +192,23 @@ $ hexo deploy
 > 部署deploy时会自动生成，因此可以省略 `$ hexo generate` 操作。
 
 第一次部署的过程中，会出现要求输入GitHub账号信息的步骤，请输入即可：
-![GitHub登录](/images/posts/github-signin.png)
+![GitHub登录](http://www.hellokang.net/images/posts/github-signin.png)
 
 等等过后，如果出现 `Deploy done`，类似的信息，说明部署完成。
-![GitHub部署成功](/images/posts/github-deploy-done.png)
+![GitHub部署成功](http://www.hellokang.net/images/posts/github-deploy-done.png)
 
 也可以去版本库中查看是否已经存在代码了，版本库地址就是：https://github.com/yourusername/yourusername.github.io
-![GitHub部署成功](/images/posts/github-deploy-done-code.png)
+![GitHub部署成功](http://www.hellokang.net/images/posts/github-deploy-done-code.png)
 
 部署完毕，就可以在 `yourusername.github.io` 看到你的博客了。
-![GitHub博客](/images/posts/github-blog.png)
+![GitHub博客](http://www.hellokang.net/images/posts/github-blog.png)
 
 ### 3.6 绑定域名
+过程如下：
+* 1 申请域名，在域名供应商申请，例如万网（阿里云）。
+* 2 添加解析到GitHub到IP，可以通过ping yourusername.github.io 获取，例如是：185.199.109.153。在域名供应商设置，例如万网（阿里云）。
+* 3 在版本库中，增加一个CNAME。进入yourusername.github.io版本库，右上角setting，找到 Custom domain，设置好自己的域名即可。
+![](http://www.hellokang.net/images/posts/github-custom-domain.png)
 
 ## 4 总述
 完成以上部署后，博客完毕。写作流程就是，本地编辑md文件，本地预览ok后，发布到github即可！
