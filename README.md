@@ -1,6 +1,8 @@
 # blog
-hank‘s personal blog
+Hank's personal blog
 
 # Usage
-'''npm install
-'''hexo server
+```
+npm install
+hexo server
+```
